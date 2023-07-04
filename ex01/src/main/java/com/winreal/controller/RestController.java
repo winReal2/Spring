@@ -43,8 +43,10 @@ public class RestController {
 	//결과 : 키와 값의 형태로 구성되어 있음	
 	//{"id":null,"pw":null,"name":null,"age":0,"dueDate":null}	
 	//jackson-databind 라이브러리를 추가해야 json형식으로 파싱가능
-	//메이븐 리파지토리 > 검색 > 첫번째 꺼 > 첫번째 버전 > 복붙(pom.xml)	
-		
+	//메이븐 리파지토리 > 검색 > 첫번째 꺼 > 첫번째 버전 > 복붙(pom.xml)
+	
+	// 화면에서 호출. json에서 서버로, 서버에서 화면으로(html)
+	// 웹이 앱으로 접근하면서, 페이지 낭비를 줄이기 위해 발달된 것 같아요	
 	
 /**
  *	 ● ResponseEntity
