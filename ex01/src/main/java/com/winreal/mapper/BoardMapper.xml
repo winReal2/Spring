@@ -19,7 +19,7 @@
 	 -->
 	<select id="getListXml" resultType="com.winreal.vo.BoardVO">
 		<![CDATA[
-		select * from tbl_board where bno>0
+		select * from tbl_board where bno>0 order by bno desc
 		]]>
 	</select>
 	<!-- 
