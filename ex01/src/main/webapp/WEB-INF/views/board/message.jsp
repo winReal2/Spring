@@ -29,10 +29,13 @@
 	window.onload=function(){
 		if(msg != ''){			
 		document.querySelector(".modal-body").innerHTML = msg;
-		
-		const myModal = new bootstrap.Modal('myModal', {
+		/*const myModal = new bootstrap.Modal('myModal', {
 			  keyboard: false
-			})
+			});*/
+			
+		let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+			  keyboard: false
+			});
 			
 			myModal.show();
 		}

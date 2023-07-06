@@ -4,6 +4,32 @@
 <!doctype html>
 <html lang="ko">
   <head>
+  <script type="text/javascript">
+	let msg = '${msg}';
+	
+	window.onload=function(){
+		if(msg != ''){			
+		document.querySelector(".modal-body").innerHTML = msg;
+		// 버튼 출력 제어
+		document.querySelector("#btnModalSave").style.display='none';
+		
+		let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+			  keyboard: false
+			});			
+			myModal.show();
+		}		
+	}
+	function requestAction(url, bno){
+		//form이름을 확인!!
+		searchForm.action = url;
+		searchForm.bno.value= bno;
+		searchForm.submit();
+	}
+
+	
+</script>
+  
+  
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -17,27 +43,7 @@
 
 
 <title>Insert title here</title>
-<script type="text/javascript">
-	let msg = '${msg}';
-	
-	window.onload=function(){
-		
-	if(msg != ''){
-		//메세지 출력	
-		document.querySelector(".modal-body").innerHTML =msg;
-		//버튼 출력 제어
-		document.querySelector(".btnModalSave").style.display='none';
-		
-		//모달 생성
-		let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-			  keyboard: false
-			});
-			
-			//모달 보여주기
-			myModal.show();
-		}	
-	}
-</script>
+
 
     
     <!-- Custom styles for this template -->
@@ -53,11 +59,14 @@
     <a class="btn btn-lg btn-primary" href="../board/write" role="button">글쓰기&raquo;</a>
   </div>
   <p></p>
+  
+  <%@include file="../common/searchForm.jsp" %>
   <!-- 리스트 출력 -->
   <div class="list-group w-auto">
   
   	<c:forEach items="${list }" var="vo">
-    <a href="/board/view?bno=${vo.bno }" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+    <a onclick="requestAction('/board/view', ${vo.bno })" 
+   			href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
       <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
       <div class="d-flex gap-2 w-100 justify-content-between">
         <div>
@@ -69,12 +78,13 @@
     </a>
     </c:forEach>
   </div>
+  <p></p>
+  <%@include file="../common/pageNavi.jsp" %>
 </main>
 
 
     <!--  cript src="../assets/dist/js/bootstrap.bundle.min.js"></script> -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,7 +95,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        	중앙정보
+        	이것이 메세지...
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
@@ -94,6 +104,8 @@
     </div>
   </div>
 </div>
+
+
 
 
      

@@ -9,21 +9,19 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script type="text/javascript">
 	window.onload = function(){
-	
-	const myModal = new bootstrap.Modal('#myModal', {
-	keyboard: false
-	});
-	document.querySelector(".modal-body").innerHTML = '메세지...';
-	
-	myModal.show();
-	
-	// myModal 요소 선택
-	const myModalEl = document.getElementById('myModal');
-	// 이벤트 등록
-	myModalEl.addEventListener('hidden.bs.modal', event => {
-	  history.go(-1);
-	})
-	
+		const myModal = new bootstrap.Modal('#myModal', {
+		keyboard: false
+		});
+		document.querySelector(".modal-body").innerHTML = '메세지...';
+		
+		myModal.show();
+		
+		// myModal 요소 선택
+		const myModalEl = document.getElementById('myModal');
+		// 이벤트 등록
+		myModalEl.addEventListener('hidden.bs.modal', event => {
+		  history.go(-1);
+		})
 	}	
 </script>  
  

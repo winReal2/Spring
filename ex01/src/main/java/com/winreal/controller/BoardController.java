@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.winreal.service.BoardService;
 import com.winreal.vo.BoardVO;
+import com.winreal.vo.Criteria;
 
 import jdk.internal.org.jline.utils.Log;
 import lombok.extern.log4j.Log4j;
@@ -47,19 +48,28 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
-	
+	/**
+	 * 파라메터의 자동수집
+	 *  기본생성자를 이용해서 객체를 생성
+	 *  -> setter 메서드를 이용해서 세팅 (Criteria 보면 알수 있다)
+	 * @param model
+	 * @param cri
+	 */
 	@GetMapping("list")
-	public void getList(Model model) {
+	public void getList(Model model, Criteria cri) { //vo 2개 추가 (vo패키지에 2개 생성)
 		//잘 조회되었는지 확인하려면
-		List<BoardVO> list = boardService.getListXml();
-		log.info("================");
-		log.info(list);
-		model.addAttribute("list", list);
+		//List<BoardVO> list = 
+				boardService.getListXml(cri, model); //change method 클릭
+		log.info("=====================list");
+		log.info("cri : " + cri);
+		// log.info("list : " + list);
+
+		//model.addAttribute("list", list);
 	}
 	
 	@GetMapping("view")
 	public void getOne(Model model, BoardVO paramVO) {
-		log.info("==============bno" + paramVO);
+		log.info("======================= bno" + paramVO);
 		BoardVO board = boardService.getOne(paramVO.getBno());
 		model.addAttribute("board", board);
 	}
@@ -120,8 +130,52 @@ public class BoardController {
 	
 	@GetMapping("edit")
 	public String edit(BoardVO paramVO, Model model) {
-		BoardVO board = boardService.getOne(paramVO.getBno());
+		BoardVO board = boardService.getOne(paramVO.getBno());  // 게시물 정보 조회
 		model.addAttribute("board", board);
-		return "/board/write";
+		
+		/**
+		 * 수정하기
+		 * 글쓰기와 다른점
+		 * -bno를 파라메터로 받아야함
+		 * -버튼, 버튼의 액션이 달라짐 (그냥 폼 전송하면 글쓰기로 넘어감)
+		 */	
+		return "/board/write"; //경로반환
 	}
-}
+	
+	@PostMapping("editAction")
+	public String editAction(BoardVO board
+							, Model model
+							, RedirectAttributes rttr) {
+		//수정 (이미 서비스에서 구현 해놔서 호출만하면 된다)
+		int res = boardService.update(board);
+		if(res > 0) {
+			//redirect시 request 영역이 공유되지 않으므로 RedirectAttributes를 이용
+			//model.addAttribute("msg", "수정되었습니다"); // 메세지를 담기위해 model객체 생성
+			rttr.addFlashAttribute("msg", "수정되었습니다..");
+			 //addFlashAttribute 세션영역에 잠깐 저장했다가 사라짐
+			//상세페이지로 이동
+			System.out.println("res : " + res);
+			return "redirect:/board/view?bno="+board.getBno(); //bno값 가지고 가야해요 (bno값을 모르니 BoardVO객체에 수집)			
+		} else {
+			model.addAttribute("msg", "수정중 예외사항이 발생하였습니다");
+			//메세지 처리
+			return "/board/message";
+		}
+	}
+		@GetMapping("delete")
+		public String delete(BoardVO board, Model model, RedirectAttributes rttr) {
+			
+			int res = boardService.delete(board.getBno());
+			if(res > 0) {
+				//model.addAttribute("삭제되었습니다..");
+				rttr.addFlashAttribute("msg", "삭제되었습니다..");
+				return "redirect:/board/list";				
+			} else {
+				model.addAttribute("msg", "삭제중 예외가 발생하였습니다.");
+				return "/board/message";
+			}
+			
+		}
+		
+		
+	}
