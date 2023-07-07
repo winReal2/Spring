@@ -58,7 +58,7 @@ ${param.searchWord}
 	  <label for="writer" class="form-label">작성자</label>
 	  <input type="text" class="form-control" id="writer" name="writer" readonly value="${board.writer }">
 	</div>
-	<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+	<div class="d-grid gap-2 d-md-flex justify-content-md-center" value="${board.bno }">
 	<button type="submit" class="btn btn-primary btn-sm" onclick="requestAction('/board/edit')">수정</button>
 	<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/board/delete?bno=${board.bno}'">삭제</button>
 </div>
