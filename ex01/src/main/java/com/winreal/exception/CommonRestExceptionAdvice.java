@@ -1,11 +1,15 @@
 package com.winreal.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import lombok.extern.log4j.Log4j;
@@ -24,7 +28,7 @@ import lombok.extern.log4j.Log4j;
  * 
  */
 
-@ControllerAdvice
+@RestControllerAdvice
 @Log4j
 /*★log4j 오류발생 
 	java.lang.Error: Unresolved compilation problems: 
@@ -33,22 +37,21 @@ import lombok.extern.log4j.Log4j;
 	Logger cannot be resolved to a type
 => pom.xml에서 <scope>runtime</scope>를 주석처리 해주면 된다
 */
-public class CommonExceptionAdvice {
+public class CommonRestExceptionAdvice {
 
 	// ex을 매개변수로 받고 모델에 값을 저장
 	@ExceptionHandler(Exception.class)
-	public String except(Exception ex, Model model) {
+	public Map<String, Object> except(Exception ex, Model model) {
 		System.out.println("Exception...." + ex.getMessage());
-		log.info("Exception....");
+		log.info("Rest Exception....");
 		log.debug("로그테스트 + debug");
 		log.error("로그테스트 + error");
 		
+		Map<String, Object>  map = new HashMap<String, Object>();
+		map.put("result", "fail");
+		map.put("message", ex.getMessage());
 		
-		// 화면에 가져다 출력하고 싶으면 모델에 담아주면 된다(이름과 값주면 됨)
-		model.addAttribute("exception", ex);
-		
-		
-		return "/error/error500";
+		return map;
 	}
 	
 	//404에러를 처리할 수 있게끔 메서드 만듦

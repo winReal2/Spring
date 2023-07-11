@@ -29,6 +29,13 @@ public class BoardController {
 	 *  WEB_INF/views/board/msg.jsp
 	 */
 	
+	
+	// board/reply/test
+	@GetMapping("/reply/test")
+	public String test() {
+		return "/reply/test";
+	}
+	
 	@GetMapping("msg")
 	public void msg() {
 		
