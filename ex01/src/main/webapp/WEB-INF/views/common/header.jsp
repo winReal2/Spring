@@ -6,24 +6,29 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
+<script src="https://kit.fontawesome.com/410d7ec875.js" crossorigin="anonymous"></script>
+<script>
 	let msg = '${msg}';
 	
-	window.onload=function(){
-		
-	if(msg != ''){
-		//메세지 출력	
-		document.querySelector(".modal-body").innerHTML =msg;
-		//버튼 출력 제어
-		document.querySelector("#btnModalSave").style.display='none';
-		
-		//모달 생성
-		let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-			  keyboard: false
-			});
+	window.addEventListener('cilck', function(){
+		if(msg != ''){
+			//메세지 출력	
+			document.querySelector(".modal-body").innerHTML =msg;
+			//버튼 출력 제어
+			document.querySelector("#btnModalSave").style.display='none';
 			
-			//모달 보여주기
-			myModal.show();
-		}	
+			//모달 생성
+			let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+				  keyboard: false
+				});
+				
+				//모달 보여주기
+				myModal.show();
+		
+	});
+	//window.onload : 한개만 적용된다
+	//window.onload=function(){
+	//window.addEventListener('cilck', function(){ : 여러개 적용가능
 	}
 </script>
 

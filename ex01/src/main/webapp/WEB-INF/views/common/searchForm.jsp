@@ -18,7 +18,7 @@
 		<!-- 일단 눈에 보이게 -->
 		<input type="text" name="bno" value="${pageDto.cri.searchWord}"> <!-- 검색어 유지 -->
 		<input type="text" name="pageNo" value="${pageDto.cri.pageNo }">
-		
+		<!-- ★부트스트랩 : 폼컨트롤 -->
 	<div 	class="row g-3 justify-content-center"> <!-- 가운데 정렬을 위해 div박스 하나 만듦 -->
 	  <div class="col-sm-2" >
 		<select name="searchField" class="form-select" 

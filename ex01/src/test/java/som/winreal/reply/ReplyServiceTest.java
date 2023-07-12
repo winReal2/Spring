@@ -27,7 +27,7 @@ public class ReplyServiceTest {
 	@Test
 	public void test() {
 		assertNotNull(service);
-		List<ReplyVO> list = service.getList(83, );
+		List<ReplyVO> list = service.getList(83);
 		log.info("======================");
 		log.info("list : " + list);
 	}

@@ -1,19 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" inRtegrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script src="https://kit.fontawesome.com/ba30180671.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
 
 // 버튼이 생성되고 나서 이벤트를 부여하기위해 onload이벤트에 작성
 window.onload = function(){
 	// 리스트 조회및 출력
-	getList(1);
+	getList();
 	
 	btnWrite.addEventListener('click', function(){
 		// 1. 파라메터 수집
@@ -42,8 +41,8 @@ window.onload = function(){
 			// 5. 응답처리
 			.then(response => response.json())
 			.then(map => replyWriteRes(map));
-	});
 		*/
+	});
 }		
 	// 1. 서버에 댓글리스트 요청
 	function getList(){
@@ -106,7 +105,7 @@ window.onload = function(){
 		pageBlock +=
 		 '<nav aria-label="..." >'
 		 //★ justify-content-end : 페이지블록바 오른쪽 정렬!
-		+ ' <ul class="pagination justify-content-end">'
+		+ ' <ul class="pagination justify-content-end">';
 		
 		//prev, next는 if문으로 처리
 		// prev 버튼
@@ -232,7 +231,7 @@ window.onload = function(){
 				// 콜백함수 실행
 				.then(map => callback(map));
 		} catch(e){
-			console.log(e);
+			console.log('fetchPost', e);
 		}
 	}
 
@@ -240,14 +239,17 @@ window.onload = function(){
 </head>
 <body>
 <h2>답글달기</h2>
-<!--  input type="text" name="bno" id="bno" value="30"> -->
+<%--
+<input type="text" name="bno" id="bno" value="30">
 <input type="text" name="page" id="page" value="1">
 <input type="text" id="replyer"> <br>
 
 <div class="input-group mb-3">
-  <input type="text" id="reply" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  <input type="text" id="reply" class="form-control" 
+  		placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
   <span class="input-group-text" id="btnWrite">댓글작성</span>
 </div>
+ --%>
 <div id="replyDiv"></div>
 
 </body>

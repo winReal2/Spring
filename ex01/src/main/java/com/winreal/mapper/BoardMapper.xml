@@ -42,7 +42,7 @@
 	-->
 	<insert id="insert"> 
 		insert into tbl_board (bno, title, content, writer) 
-		values (seq_board.nextval, #{title},#{content},#{writer})
+		values (seq_board.nextval, #{title}, #{content}, #{writer})
 	</insert>
 	
 	
