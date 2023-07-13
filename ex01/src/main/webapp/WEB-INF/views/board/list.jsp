@@ -61,6 +61,8 @@
   <p></p>
   
   <%@include file="../common/searchForm.jsp" %>
+  
+  ${userId }
   <!-- 리스트 출력 -->
   <div class="list-group w-auto">
   

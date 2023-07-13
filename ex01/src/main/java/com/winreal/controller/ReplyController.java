@@ -26,7 +26,7 @@ import oracle.jdbc.proxy.annotation.Post;
  */
 @RestController
 @Log4j
-public class ReplyController {
+public class ReplyController extends CommonRestController {
 
 	@Autowired
 	ReplyService service;
@@ -44,8 +44,6 @@ public class ReplyController {
 	@GetMapping("/reply/list/{bno}/{page}")//뷰페이지에 페이지넘버가 이미사용되고 있어서 페이지로
 	public Map<String, Object> getList(@PathVariable("bno") int bno
 								,@PathVariable("page") int page){
-		// 종류에 상관없이 담을 수 있음
-		Map<String, Object> map = new HashMap<String, Object>();
 		
 		log.info("bno : " + bno);
 		log.info("page : " + page);
@@ -58,16 +56,23 @@ public class ReplyController {
 		int totalCnt = service.totalCnt(bno);
 		//페이지 블럭을 생성
 		PageDto pageDto = new PageDto(cri, totalCnt);
-		
+		/*
+		// 종류에 상관없이 담을 수 있음
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("pageDto", pageDto);
 		
 		return map;
+		*/
+		return responseListMap(list, pageDto);
 	}
 	
 	@GetMapping("/reply/delete/{rno}")
 	public Map<String, Object> delete(@PathVariable("rno") int rno){
+		
+		/*
 		Map<String, Object> map = new HashMap<String, Object>();
+		
 		int res = service.delete(rno);
 		if(res > 0) {
 			map.put("result", "success");
@@ -75,7 +80,11 @@ public class ReplyController {
 			map.put("result", "fail");
 			map.put("message", "댓글 삭제중 예외사항이 발생 하였습니다.");
 		}
+		
 		return map;
+		*/
+		
+		return responseDeleteMap(service.delete(rno));
 	}
 	
 	
@@ -90,18 +99,23 @@ public class ReplyController {
 	public Map<String, Object> insert(@RequestBody ReplyVO vo){
 		log.info("================= insert");
 		log.info("replyVO" + vo);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
 			int res = service.insert(vo);		
 			
+			// 우리가 만들어 놓은 맵
+			return map = responseWriteMap(res);
+			
+			/*
 			if(res>0) {
 				map.put("result", "success");
 			} else {
 				map.put("result", "fail");
 				map.put("message", "댓글 등록중 예외사항이 발생 하였습니다.");
 			}
-			
+			*/
 		} catch (Exception e) {
 			map.put("result", "fail");
 			map.put("message", e.getMessage());
@@ -113,6 +127,7 @@ public class ReplyController {
 	
 	@PostMapping("/reply/editAction")
 	public Map<String, Object> update(@RequestBody ReplyVO vo){
+		/*
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		int res = service.update(vo);
@@ -124,10 +139,14 @@ public class ReplyController {
 		}
 		
 		return map;
+		*/
+		
+		return responseEditMap(service.update(vo));
 	}
 	
-	
-	
+
+	//★ 위에서 Map을 중복으로 사용하고 있어서 여기서 공통 메서드 만들어줄거임
+	// > (CommonRestController로 이동해서 클래스 만들어주고 이 컨트롤러는 상속 처리)
 	
 }
 

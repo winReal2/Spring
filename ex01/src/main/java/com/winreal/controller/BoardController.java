@@ -1,5 +1,7 @@
 package com.winreal.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -151,15 +153,34 @@ public class BoardController {
 	
 	@PostMapping("editAction")
 	public String editAction(BoardVO board
+							, Criteria cri  //(수정페이지에서 수집하는 역할)
 							, Model model
 							, RedirectAttributes rttr) {
+		
+		//★ 파라메터를 넘기는 것에 대해 이해가 필요!! 
+		//★ 어디다 저장했는지, 어느 영역에 저장했는지, 내장객체에 저장했는지 구분!!
+		//?pageNo=1
+		//request.getParam("pageNo");
+		//request.setAttr("")
+		//파라미터로 넘어왔을 때 el태그 사용해서 ${param.pageNo} param.~해서 사용
+		
+		//request.getAttr("")
+		//session.setAttr("")
+		//내장객체를 통해 넘겨줄때 사용법 => ${pageNo}
+		
 		//수정 (이미 서비스에서 구현 해놔서 호출만하면 된다)
 		int res = boardService.update(board);
 		if(res > 0) {
 			//redirect시 request 영역이 공유되지 않으므로 RedirectAttributes를 이용
 			//model.addAttribute("msg", "수정되었습니다"); // 메세지를 담기위해 model객체 생성
 			rttr.addFlashAttribute("msg", "수정되었습니다..");
-			 //addFlashAttribute 세션영역에 잠깐 저장했다가 사라짐
+			//addFlashAttribute 세션영역에 잠깐 저장했다가 사라짐
+			//?~~
+			rttr.addAttribute("pageNo", cri.getPageNo()); //cri : 이전화면에서 받아온값을 받아서 넘겨줌
+			rttr.addAttribute("searchField", cri.getSearchField());
+			rttr.addAttribute("searchWord", cri.getSearchWord());
+			
+			
 			//상세페이지로 이동
 			System.out.println("res : " + res);
 			return "redirect:/board/view?bno="+board.getBno(); //bno값 가지고 가야해요 (bno값을 모르니 BoardVO객체에 수집)			

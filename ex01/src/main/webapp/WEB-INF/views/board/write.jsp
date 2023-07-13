@@ -24,6 +24,15 @@
 			viewForm.action = url;
 			viewForm.submit();
 		}
+		
+		window.addEventListener('load', function(){
+			btnList.addEventListener('click', function(){
+				viewForm.action = "/board/list";
+				viewForm.method = "get";
+				viewForm.submit();			
+			});
+		})
+		
 	</script>
 </head>
 <body>
@@ -35,14 +44,23 @@
   <div class="bg-light p-5 rounded">
     <h1>게시판 (글 작성)</h1>
     <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
-    <a class="btn btn-lg btn-primary" href="../board/list" role="button">리스트&raquo;</a>
+    <a class="btn btn-lg btn-primary" href="#"  id="btnList" role="button">리스트&raquo;</a>
+    <!-- ★ 상세보기에서 리스트 버튼 에러 해결 : href="../board/list" 를 #으로 변경 , id="btnList" 작성 > 함수 작성-->
   </div>
   <p></p>
+  
+  
   <!-- 글쓰기 -->
   <div class="list-group w-auto">
 
-<!-- 사용자의 입력을 받을 때 post 많이 이용 -->
-<form method="post" action="/board/write" name="viewForm"> <!--★ name 을 줘야한다 -->
+	<!-- 사용자의 입력을 받을 때 post 많이 이용 -->
+	<form method="post" action="/board/write" name="viewForm"> <!--★ name 을 줘야한다 -->
+
+	<!-- 폼 안에 파라메터 작성해야  페이지, 검색정보 유지 -->
+	<input type="text" name="pageNo" value="${param.pageNo }"> 
+	<input type="text" name="searchField" value="${param.searchField}"> 
+	<input type="text" name="searchWord" value="${param.searchWord}"> 
+
 	<div class="mb-3">
 		<label for="title" class="form-label">제목</label>
 		<input name="title" type="text" class="form-control" id="title" value="${board.title }">

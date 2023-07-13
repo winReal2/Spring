@@ -1,5 +1,5 @@
 
-console.log('reply.js============')
+console.log("reply.js============")
 
 //get방식 요청
 	function fetchGet(url, callback){
@@ -38,10 +38,20 @@ console.log('reply.js============')
 		}
 	}
 	
-	//댓글 조회 및 출력
-	function getReplyList(){
+	//댓글 조회 및 출력               js는 파라메터 있을수도, 없을수도있따
+	function getReplyList(page){
+		/**
+		 * false : false, 0, "", NaN, undefined, null
+		 * falsey한 값 이외의 값이 들어있으면 true를 반환
+		 * 
+		 * page에 입력된 값이 없으면 1로 세팅
+		 */
+		//페이지가 비어있으면 1로 세팅 (false이면 1로 세팅) 
+		if(!page){
+			page = 1;			
+		}
+		
 		let bno = document.querySelector('#bno').value;
-		let page = 1;
 		console.log('bno : ', bno);
 			
 		
@@ -91,12 +101,12 @@ console.log('reply.js============')
 					
 					//리스트가 반복할 대상. 리스트를 돌며 댓글목록을 생성
 					//rno로 유일한 행 구분 (index도 유일한 행 구분)
+					//수정, 삭제 아이콘 삽입
 					list.forEach(reply => {
 						replyDivStr += 
-						 '  <tr id="tr'+ reply.rno +'">         '
+						 '  <tr id="tr'+ reply.rno +'" data-value="'+reply.reply+'">         '
 						+'    <th scope="row">'+ reply.rno +'</th>      '
 						+'      <td  class="text-start">' + reply.reply 
-						//수정, 삭제 아이콘 삽입
 						+' 			<i class="fa-regular fa-pen-to-square" '
 						+' 					onclick="replyEdit('+ reply.rno +')"></i> '
 						+' 			<i class="fa-solid fa-trash-can" ' 
@@ -116,22 +126,35 @@ console.log('reply.js============')
 					
 					//페이지 블럭 생성
 					let pageBlock = 
-						
 						 `	<nav aria-label="...">                                            `
-						+`  <ul class="pagination justify-content-end">                       `
-						+`    <li class="page-item disabled">                                 `
-						+`      <a class="page-link">Previous</a>                             `
-						+`    </li>                                                           `
-						+`    <li class="page-item"><a class="page-link" href="#">1</a></li>  `
-						+`    <li class="page-item active" aria-current="page">               `
-						+`      <a class="page-link" href="#">2</a>                           `
-						+`    </li>                                                           `
-						+`    <li class="page-item"><a class="page-link" href="#">3</a></li>  `
-						+`    <li class="page-item">                                          `
-						+`      <a class="page-link" href="#">Next</a>                        `
-						+`    </li>                                                           `
-						+`  </ul>                                                             `
-						+`</nav>                                                              `
+						+`  <ul class="pagination justify-content-center">                    `;
+					
+						// 마침표(세미콜론) 후 다시 변수에 담아준다
+						// prev 버튼 (보여지고 안보여지고 처리)
+					if(pageDto.prev){
+				pageBlock += `    <li class="page-item disabled" onclick="getReplyList(${pageDto.startNo-1})">  `
+							+`      <a class="page-link">Previous</a>                             `
+							+`    </li>                                                           `;						
+					}
+						
+						//페이지 버튼 (반복문으로 startNo ~ endNo 처리)
+					for(let i=pageDto.startNo; i<=pageDto.endNo; i++){
+						//활성화
+						let active = pageDto.cri.pageNo == i ? 'active': '';
+				pageBlock += `    <li class="page-item ${active}" onclick="getReplyList(${i})">	` //쌍따옴표!! 주의!!
+							+ ` 	<a class="page-link" href="#"> ${i} </a> 				`
+							+ ` 	</li>  `;
+					}
+						
+						// next 버튼 (보여지고 안보여지고 처리)
+					if(pageDto.next){
+				pageBlock += `    <li class="page-item" onclick="getReplyList(${pageDto.endNo+1})">  `
+							+`      <a class="page-link" href="#">Next</a>                        `
+							+`    </li>                                                           `;						
+					}
+						
+			pageBlock += `  </ul>                                                             `
+						+`</nav>                                                              `;
 						
 						replyDiv.innerHTML += pageBlock;	
 			}
@@ -152,9 +175,9 @@ console.log('reply.js============')
 		
 		console.log(obj);
 		
-		//url : 요청경로 
-		//obj : JSON형식으로 전달할 데이터
-		//callback 함수 : 응답결과를 받아서 처리할 함수 
+		//url : 요청경로 (어디로 갈건지)
+		//obj : JSON형식으로 전달할 데이터 (뭐 지고 갈건지)
+		//callback 함수 : 응답결과를 받아서 처리할 함수  (뭘 반환할건지)
 		fetchPost('/reply/insert', obj, replyRes);
 	}
 	
@@ -174,7 +197,7 @@ console.log('reply.js============')
 	//답글 삭제하기
 	function replyDelete(rno){
 		console.log('rno', rno)
-		fetch('/reply/delete/' + rno, replyRes);
+		fetchGet('/reply/delete/' + rno, replyRes);
 	}
 		
 	function replyEdit(rno){
@@ -182,19 +205,19 @@ console.log('reply.js============')
 		let replyTxt = tr.dataset.value;
 		console.log('tr', tr);
 		tr.innerHTML = '<td colspan="3">'
-			+'<div class="input-group">                        '
-			+'  <span class="input-group-text"> 답글수정 </span> '
-			+'  <input type="text"                             '
-			+'  		 id="reply'+rno+'" value="' + replyTxt + '"> '
-			+'  		 aria-label="First name"               '
-			+'  		 class="form-control">                 '
-			+'  <input type="button"                           '
-			+'  		 onclick="replyEditAction('+ rno +')"             '
-			+'  		 aria-label="Last name"                '
-			+'  		 class="input-group-text"              '
-			+'  		 value="수정하기">                     '
-			+'  </div>										'
-			+ '</td>';
+						+'<div class="input-group">                        '
+						+'  <span class="input-group-text"> 답글수정 </span> '
+						+'  <input type="text"                             '
+						+'  		 id="reply'+rno+'" value="' + replyTxt + '" '
+						+'  		 aria-label="First name"               '
+						+'  		 class="form-control">                 '
+						+'  <input type="button"                           '
+						+'  		 onclick="replyEditAction('+ rno +')"             '
+						+'  		 aria-label="Last name"                '
+						+'  		 class="input-group-text"              '
+						+'  		 value="수정하기">                     '
+						+'  </div>										'
+						+ '</td>';
 	}
 		
 	function replyEditAction(rno){
@@ -207,7 +230,7 @@ console.log('reply.js============')
 				, reply : reply
 		}
 		//서버에 요청(콜백함수를 함께 보낸다)
-		fetchPost('/reply/editAction'. obj, replyRes);
+		fetchPost('/reply/editAction', obj, replyRes);
 	
 	}	
 		
