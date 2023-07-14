@@ -52,4 +52,9 @@
 	    <filter-name>SetCharacterEncodingFilter</filter-name>
 	    <url-pattern>/*</url-pattern> <!-- * : 모든 url에 대한 매핑 -->
 	</filter-mapping>
+	
+	<session-config>
+    	<session-timeout>30</session-timeout> <!-- 세션 유효 시간을 분 단위로 설정 -->
+	</session-config>
+
 </web-app>

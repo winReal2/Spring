@@ -5,7 +5,18 @@
 
 	<select id="login" resultType="com.winreal.vo.Member">
 		<!-- 파라미터 받을 부분에 #이용 $넣으면 실행되긴하지만 preparedStatment형식으로 하려면 #넣어줘야함 -->
-		select * from member where id=#{id} and pw=#{pw}
+		select * from member where id=#{id}
+	</select>
+	
+	<insert id="insert">
+		insert into member (id, pw, name)
+					values (#{id}, #{pw}, #{name})
+	</insert>
+	
+	<select id="idCheck" resultType="int">
+		select count(*)
+			from member 
+			where id=#{id}
 	</select>
 
 </mapper>

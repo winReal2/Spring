@@ -49,9 +49,11 @@
     <!-- Custom styles for this template -->
     <link href="navbar-top-fixed.css" rel="stylesheet">
 </head>
+
 <body>
 <%@include file="../common/header.jsp" %>
-
+loginId : ${userId }
+empty userId : ${empty userId }
 <main class="container">
   <div class="bg-light p-5 rounded">
     <h1>게시판</h1>

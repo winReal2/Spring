@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,12 +44,24 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
+      
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
+        
+        <!-- el표현 사용시 공백주의  -->
+        
+        <c:if test="${empty userId}" var="res">        	
+	        <li class="nav-item">
+	          <a class="nav-link" href="/login">Login</a>
+	        </li>
+        </c:if>
+        <c:if test="${not res}">        	
+	        <li class="nav-item">
+	          <a class="nav-link" href="/logout">Logout</a>
+	        </li>
+        </c:if>
+        
         <li class="nav-item">
           <a class="nav-link disabled">Disabled</a>
         </li>

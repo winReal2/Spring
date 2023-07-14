@@ -9,8 +9,10 @@ import com.winreal.vo.Member;
 @Service
 public interface MemberService {
 	
+	Member login(Member member); 
 	
-	public Member login(Member member, Model model); 
-		
+	int insert(Member member);
+	
+	int idCheck(Member member);
 	
 }

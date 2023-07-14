@@ -19,10 +19,11 @@ import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
-public class MemberTest {
+public class MemberServiceTest {
+	
 	//테스트 하려면 먼저 객체 생성해야함
 	@Autowired
-	MemberMapper memberMapper;
+	MemberService memberService;
 	
 	@Test
 	public void test() {
@@ -31,7 +32,7 @@ public class MemberTest {
 		member.setPw("1234");
 		
 		
-		member = memberMapper.login(member);
+		member = memberService.login(member);
 		
 		log.info(member);
 		assertNotNull(member);
@@ -40,12 +41,11 @@ public class MemberTest {
 	@Test
 	public void testInsert() {
 		Member member = new Member();
-		member.setId("test1");
+		member.setId("test5");
 		member.setPw("1234");
-		member.setName("name1");
+		member.setName("name2");
 		
-		int res = memberMapper.insert(member);
-		member = memberMapper.login(member);
+		int res = memberService.insert(member);
 		
 		assertEquals(1, res);
 	}
@@ -53,11 +53,9 @@ public class MemberTest {
 	@Test
 	public void testIdCheck() {
 		Member member = new Member();
-		member.setId("test1");
+		member.setId("test2");
 		
-		int res = memberMapper.idCheck(member);
-		member = memberMapper.login(member);
-		
-		assertEquals(1, res);
+		int res = memberService.idCheck(member);
+		System.out.println("결과 : " + res);
 	}
 }

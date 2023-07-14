@@ -1,4 +1,4 @@
-console.log('');
+console.log('common.js');
 //개발자모드 > 네트워크탭 > 파일잘다운받았는지 확인가능
 
 //get방식 요청
