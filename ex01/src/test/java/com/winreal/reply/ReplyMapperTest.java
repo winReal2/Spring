@@ -1,4 +1,4 @@
-package som.winreal.reply;
+package com.winreal.reply;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

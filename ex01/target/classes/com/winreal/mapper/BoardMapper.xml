@@ -84,6 +84,13 @@
 		<include refid="criteria"></include>
 	</select>
 	
+	<update id="updateReplyCnt">
+    	update tbl_board 
+    		set replycnt = replycnt + #{amount} 
+    	where bno = #{bno}
+	</update>
+	
+	
 	<!-- 
 		반복되는 쿼리를 미리 작성해놓고 재활용합니다
 			반복할 쿼리 선언 : <sql id="">
@@ -105,5 +112,7 @@
 			</when>
 		</choose>
 	</sql>
+	
+
 	
 </mapper>

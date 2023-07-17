@@ -23,7 +23,23 @@
 	</beans:bean>
 	
 	
-	<context:component-scan base-package="com.winreal" />
+	<context:component-scan base-package="com.winreal.controller" />
+	<context:component-scan base-package="com.winreal.interceptor"></context:component-scan>
+	
+	<interceptors>
+		<!-- 로그인 체크 -->
+		<interceptor>
+			<mapping path="/board/*"/>
+			<exclude-mapping path=""/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+	
+		<!-- 관리자 체크 -->
+		<interceptor>
+			<mapping path="/admin**"/>
+			<beans:ref bean="adminInterceptor"/>
+		</interceptor>
+	</interceptors>
 	
 	
 	

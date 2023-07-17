@@ -256,7 +256,7 @@
 		//로그인성공 > list로 이동
 		//로그인 실패 > 메세지 처리
 		if(map.result == 'success'){
-			location.href="/board/list";
+			location.href=map.url;
 		} else {
 			msg.innerHTML=map.msg;
 		}		

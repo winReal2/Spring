@@ -44,7 +44,7 @@
   <div class="bg-light p-5 rounded">
     <h1>게시판 (글 작성)</h1>
     <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
-    <a class="btn btn-lg btn-primary" href="#"  id="btnList" role="button">리스트&raquo;</a>
+    <a class="btn btn-lg btn-primary" href="../board/list"  id="btnList" role="button">리스트&raquo;</a>
     <!-- ★ 상세보기에서 리스트 버튼 에러 해결 : href="../board/list" 를 #으로 변경 , id="btnList" 작성 > 함수 작성-->
   </div>
   <p></p>

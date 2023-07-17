@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +67,9 @@ public class BoardController {
 	 */
 	@GetMapping("list")
 	public void getList(Model model, Criteria cri) { //vo 2개 추가 (vo패키지에 2개 생성)
+		
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
 		//잘 조회되었는지 확인하려면
 		//List<BoardVO> list = 
 				boardService.getListXml(cri, model); //change method 클릭
@@ -74,6 +78,10 @@ public class BoardController {
 		// log.info("list : " + list);
 
 		//model.addAttribute("list", list);
+		
+		stopWatch.stop();
+		log.info("수행시간 : " +stopWatch.getTotalTimeMillis()+"(ms)초");
+	
 	}
 	
 	@GetMapping("view")

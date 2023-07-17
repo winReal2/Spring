@@ -30,6 +30,7 @@ public class MemberServiceTest {
 		Member member = new Member();
 		member.setId("admin");
 		member.setPw("1234");
+		member.setName("admin");
 		
 		
 		member = memberService.login(member);

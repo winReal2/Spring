@@ -3,6 +3,8 @@ package com.winreal.member;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,4 +62,15 @@ public class MemberTest {
 		
 		assertEquals(1, res);
 	}
+	
+	@Test
+	public void testGetMemberRole() {
+		List<String > list= memberMapper.getMemberRole("admin");
+		System.out.println(list);
+		//list.contains : 리스트 안에 이 문자열("ADMIN ROLE")이 있는지 확인해서 트루폴스 반환
+		System.out.println("관리자 권한 : " + list.contains("ADMIN ROLE"));
+	}
 }
+
+
+

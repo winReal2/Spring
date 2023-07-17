@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.winreal.mapper.BoardMapper;
 import com.winreal.vo.BoardVO;
+import com.winreal.vo.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -46,7 +47,7 @@ public class boardTest {
 	@Test
 	public void getListXml() {
 		assertNotNull(boardMapper);
-		List<BoardVO> list = boardMapper.getListXml();
+		List<BoardVO> list = boardMapper.getListXml(new Criteria());
 		 log.info(list);
 		 
 		list.forEach(board -> {
@@ -116,11 +117,15 @@ public class boardTest {
 
 	@Test
 	public void getTotalCnt() {
-		int res = boardMapper.getTotalCnt();
-		
+		int res = boardMapper.getTotalCnt(new Criteria());
 		log.info("totalCnt : " + res);
 	}
 	
+	@Test
+	public void updateReplyCnt() {
+		int res = boardMapper.updateReplyCnt(83, 1);
+		assertEquals(1, res);
+	}
 }
 
 

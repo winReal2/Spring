@@ -2,6 +2,7 @@ package com.winreal.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.winreal.vo.BoardVO;
@@ -26,5 +27,7 @@ public interface BoardMapper {
 	
 	public int getTotalCnt(Criteria cri);
 	
+	//★ 파라미터 2개 이상인 경우, Param어노테이션 필수!!
+	public int updateReplyCnt(@Param("bno")int bno, @Param("amount")int amount);
 //별도의 반환타입이 없는 이유=>select를 제외한 나머지는 int를 반환 (별도로 result타입을 지정하지 않아도됨)
 }

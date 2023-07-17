@@ -1,5 +1,6 @@
 package com.winreal.controller;
 
+import java.net.URL;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -62,9 +63,19 @@ public class MemberController extends CommonRestController{
 		if(member != null) {
 			session.setAttribute("member", member);
 			session.setAttribute("userId", member.getId());
+			Map<String, Object> map = responseMap(REST_SUCCESS, "로그인 되었습니다.");
 			
+			//★사용자 화면으로 갈지, 관리자 화면으로갈지 url 만듦
+			if(member.getRole() != null && member.getRole().contains("ADMIN ROLE")) {
+				//관리자 로그인 => 관리자 페이지로 이동 
+				map.put("url", "/admin");   //★login.jsp이동후 로그인시 이동하는 페이지 수정  (function loginCheck)
+			} else {
+				map.put("url", "/board/list");				
+			}
+			System.out.println("map =============== " + map);
 			//return responseMap(1, "로그인");
-			return responseMap(REST_SUCCESS, "로그인 되었습니다.");
+			//return responseMap(REST_SUCCESS, "로그인 되었습니다.");
+			return map;
 		} else {
 			//return responseMap(0, "로그인");
 			return responseMap(REST_FAIL, "아이디와 비밀번호를 확인해주세요.");

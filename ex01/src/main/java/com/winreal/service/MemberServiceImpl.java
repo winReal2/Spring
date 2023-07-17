@@ -30,7 +30,10 @@ public class MemberServiceImpl implements MemberService {
 			boolean res = encoder.matches(paramMember.getPw(), member.getPw());
 			
 			// 비밀번호 인증이 성공하면 member객체를 반환
+			// 반환 전 사용자의 권한 조회해서 멤버에 추가!
 			if(res) {
+				//사용자 권한을 조회
+				member.setRole(memberMapper.getMemberRole(member.getId()));
 				return member;
 			}
 		}
