@@ -43,6 +43,7 @@ public class CommonRestExceptionAdvice {
 	@ExceptionHandler(Exception.class)
 	public Map<String, Object> except(Exception ex, Model model) {
 		System.out.println("Exception...." + ex.getMessage());
+		ex.printStackTrace();
 		log.info("Rest Exception....");
 		log.debug("로그테스트 + debug");
 		log.error("로그테스트 + error");

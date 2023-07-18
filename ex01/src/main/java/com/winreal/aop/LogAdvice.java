@@ -39,10 +39,10 @@ import lombok.extern.log4j.Log4j;
  * 		부가적인 관심사
  *  
  * Pointcut
- * 		부가기능이 적용되는 지점
+ * 		부가기능이 적용되는 지점 (언제어디서 적용될 것인지 지정(메서드 실행전, 후, 감싸기)
  * 
  * Target
- * 		핵심 기능을 구현한 객체
+ * 		핵심 기능을 구현한 객체, 적용되는 주요업무
  * 		(Core Concern: 핵심관심사)
  * 
  * Proxy
@@ -53,11 +53,11 @@ import lombok.extern.log4j.Log4j;
 
 @Aspect
 @Log4j
-//자바빈으로 등록위해 컴포넌트 어노테이션 
-@Component
+@Component  //자바빈으로 등록위해 컴포넌트 어노테이션 
 public class LogAdvice {
 
 	/**
+	 * 문서참고!(part5.aop.pdf)
 	 * 포인트컷 : 언제(실행 전, 후, 중) 어디에(어떤 메서드) 적용할지 기술
 	 * 
 	 * [Before]
@@ -65,7 +65,7 @@ public class LogAdvice {
 	 *  JoinPoint를 통해 파라미터 정보 참조 가능
 	 *  (JoinPoint라는 객체를 매개변수로 받아서 사용 가능)
 	 */
-	//첫 괄호 ""안에 포인트 컷 지정 ()안에는 접근제한자, 패키지포함한 클래스 이름  ..(모든메서드)
+	//첫 괄호 ""안에 포인트 컷 지정 ()안에는 접근제한자, 패키지포함한 클래스 이름  ..(매개변수)
 	@Before("execution(* com.winreal.service.Board*.*(..))")
 	public void logBefore() {
 		log.info("=============================");
@@ -77,6 +77,7 @@ public class LogAdvice {
 	 * 		파라메더에 필수는 아님
 	 * @param joinPoint
 	 */
+	//★오류추적시 도움
 	@Before("execution(* com.winreal.service.Reply*.*(..))")
 	public void logBeforeParams(JoinPoint joinPoint) {
 		log.info("===========AOP====================");
@@ -90,8 +91,12 @@ public class LogAdvice {
 	 * 		타겟의 메서드가 호출되기 이전 시점과 이후시점에 모두 처리해야할 필요가 있는 부가기능 정의 (주업무로직을 감싼다.)
 	 * 		주업무 로직을 실행하기 위해 joinPoint의 하위 클래스인 
 	 * 		ProceedingJoinPoint 타입의 파라미터를 필수적으로 선언해야 함 (반환타입 관리)
+	 * 		타겟메서드의 실행결과를 반환하기 위해서 선언은 필수!
 	 * @return pjp
 	 */
+	//★ 시간구하기
+	//어라운드는 타겟을 직접 실행해야한다 (감싸고 처리하기때문에 )
+	//어라운드의 첫번째 매서드가 ProceedingJoinPoint 들어와야 한다!(약속)
 	/*
 	@Around("execution(* com.winreal.service.Board*.*(..))")  //포인트컷. 어디다가 실행할지
 	public Object logTime(ProceedingJoinPoint pjp) {
@@ -102,7 +107,7 @@ public class LogAdvice {
 		Object res = "";
 		//주 업무로직 실행 (타켓 메서드의 실행시점을 정할 수 있다)
 		try {
-			res = pjp.proceed();
+			res = pjp.proceed();   //반드시 res에 담아서 넘겨줘야한다
 		} catch (Throwable e) {
 			// TODO: handle exception
 		}
@@ -150,7 +155,7 @@ public class LogAdvice {
 		} catch (Exception e) {
 			log.info("=========== 로그테이블 저장중 예외발생");
 			log.info(e.getMessage());
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	

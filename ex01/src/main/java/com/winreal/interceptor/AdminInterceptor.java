@@ -24,7 +24,7 @@ public class AdminInterceptor implements HandlerInterceptor{
 		if(session.getAttribute("member") != null) {
 			Member member = (Member)session.getAttribute("member");
 			List<String> role = member.getRole();
-			
+			//권한체크, role리스트에 ("ADMIN ROLE")값이 들어있는지
 			if(role.contains("ADMIN ROLE")) {
 				return true;
 			}

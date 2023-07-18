@@ -22,7 +22,7 @@ import com.winreal.vo.PageDto;
  * root-context.xml
  * component-scan 속성에 패키지를 등록합니다
  * 
- * 서비스를 interfaceㄹ 생성하는 이유
+ * 서비스를 interface 생성하는 이유
  * 1. 내부로직의 분리
  * 인터페이스를 사용함으로써 내부로직의 변경, 수정시 유연하게 대체할 수 있다
  * 2. 구현체의 전환이 용이

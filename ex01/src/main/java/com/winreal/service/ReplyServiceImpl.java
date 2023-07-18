@@ -36,6 +36,8 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	public int insert(ReplyVO vo) {
 		// 댓글 입력시  Board 테이블의  댓글 수(replyCnt)를  1 증가시켜줍니다.
+		// 둘 중 하나라도 실패 : 롤백, 둘다성공시 커밋! 
+		//(@Transactional 붙이고 안붙이고의 차이가 크다)
 		boardMapper.updateReplyCnt(vo.getBno(), 1);   //삭제할땐 -1
 		return replyMapper.insert(vo);
 	}

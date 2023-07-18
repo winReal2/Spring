@@ -29,6 +29,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 	 * 로그인이 되어있지 않은 사용자인 경우 로그인 페이지로 이동
 	 * 
 	 * preHandle : 컨트롤러 실행 전 실행
+	 * postHandle : 컨트롤러 실행 후 실행
 	 * return : 리턴타입  (boolean)
 	 * 			true(요청컨트롤러 실행)
 	 * 			false(요청컨트롤러 실행하지 않음)
@@ -46,11 +47,12 @@ public class LoginInterceptor implements HandlerInterceptor{
 			String msg = URLEncoder.encode("로그인 후 사용가능한 메뉴입니다.", "utf-8");
 		
 			//로그인이 되어있지 않은 사용자인 경우 로그인 페이지로 이동
+			//요청컨트롤러 받아들일 수 없으니 다른데로가! 이때 중요한게 한글처리(인터셉터에선 자동으로 한글처리 안해줌)
 			response.sendRedirect("/login?msg=" + msg);
 			return false;
 		}
 		
 	}
-	
+
 	
 }

@@ -22,15 +22,15 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	
+	<context:component-scan base-package="com.winreal" />
 	<context:component-scan base-package="com.winreal.controller" />
 	<context:component-scan base-package="com.winreal.interceptor"></context:component-scan>
 	
 	<interceptors>
 		<!-- 로그인 체크 -->
 		<interceptor>
-			<mapping path="/board/*"/>
-			<exclude-mapping path=""/>
+			<mapping path="/board/*"/> <!-- 무한반복 주의(/board/login) -->
+			<exclude-mapping path=""/> <!-- 제외할 요청, 경로 -->
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>
 	
