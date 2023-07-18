@@ -145,6 +145,8 @@ public class FileuploadController {
 						
 						vo.setBno(bno);
 						vo.setFileName(file.getOriginalFilename());
+						//vo.setFiletype("I");
+						//I로 지정해놔서 계속 sql에 I로 나옴. 그래서 완전히 없애버림 (setFiletype은 위에 있는 if문에서 결과도출하기 떄문에)
 						vo.setUploadPath(uploadPath);
 						vo.setUuid(uuid.toString());
 						
