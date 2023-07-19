@@ -41,12 +41,12 @@ ${pageDto.startNo }/${pageDto.endNo }
     			end="${pageDto.endNo }" 
     			var="i">
     			
-    <li class="page-item">
-    	<!-- 페이지 넘버가 i와 같으면 active처리 (삼항연산자 이용) -->
-    	<a class="page-link ${pageDto.cri.pageNo == i? 'active' : '' }" 
-    		onclick="go(${i})" 
-    		href="#"> ${i } </a>
-   	</li>
+	    <li class="page-item">
+	    	<!-- 페이지 넘버가 i와 같으면 active처리 (삼항연산자 이용) -->
+	    	<a class="page-link ${pageDto.cri.pageNo == i? 'active' : '' }" 
+	    		onclick="go(${i})" 
+	    		href="#"> ${i } </a>
+	   	</li>
     </c:forEach>
     
     <li class="page-item ${pageDto.next?'':'disabled' }">
