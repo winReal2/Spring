@@ -2,6 +2,8 @@ package com.winreal.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.winreal.vo.FileuploadVO;
 
 public interface FileuploadMapper {
@@ -16,4 +18,6 @@ public interface FileuploadMapper {
 	
 	public int insert(FileuploadVO vo);
 	
+	public int delete(@Param("bno")int bno, @Param("uuid") String uuid);
+	// 쉽게 하려면 vo에 떄려박아 ! public int insert(FileuploadVO vo);
 }

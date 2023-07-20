@@ -2,6 +2,7 @@ package com.winreal.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.spi.FileTypeDetector;
 import java.time.LocalDate;
@@ -11,7 +12,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -110,6 +116,10 @@ public class FileuploadController extends CommonRestController{
 	}
 	
 
+	
+	
+	
+
 	//중복방지용 
 	//업로드 날짜를 폴더 이름으로 사용
 	// 2023\07\18
@@ -140,8 +150,8 @@ public class FileuploadController extends CommonRestController{
 		LocalDate currentDate = LocalDate.now();
 		String uploadPath = currentDate.toString().replace("-", File.separator)
 								+ File.separator;
-		log.info("CurrentDate : " + currentDate);
-		log.info("경로 : " + uploadPath);
+		System.out.println("CurrentDate : " + currentDate);
+		System.out.println("경로 : " + uploadPath);
 	}
 	
 	
@@ -240,7 +250,81 @@ public class FileuploadController extends CommonRestController{
 			}
 		return insertRes;
 		}
+	
+	//파일삭제
+	@GetMapping("/file/delete/{uuid}/{bno}")
+	public @ResponseBody Map<String, Object> delete(
+							@PathVariable("uuid") String uuid
+							, @PathVariable("bno") int bno){
+		int res = service.delete(bno, uuid);
+		if(res > 0) {
+			return responseDeleteMap(res);
+		} else {
+			return responseDeleteMap(res);
+		}
 	}
+	
+	/**
+	 *  [★파일다운로드]
+	 * 		컨텐츠타입을 다운로드 받을 수 있는 형식으로 지정하여 
+	 * 		브라우저에서 파일을 다운로드할 수 있게 처리
+	 * 
+	 *  다운로드 받을 수 있는 형식으로 처리 > 한글깨짐에 대한 처리
+	 *  헤더 설정을 위해 ResponseEntity타입으로 
+	 * @param fileName
+	 * @return
+	 */
+	@GetMapping("/file/download")
+	public @ResponseBody ResponseEntity<byte[]> download(String fileName){
+		log.info("download file : " + fileName);
+		// 헤더지정을 위해 헤더객체 생성 , ★스프링프레임워크http 임포트
+		HttpHeaders headers = new HttpHeaders();
+		
+		//파일이 있는지 없는지 확인위해 파일 객체 생성
+		File file = new File(ATTACHES_DIR + fileName);
+		System.out.println("file : " + file);
+		//파일이 존재하면
+		if(file.exists()) {
+			// 컨텐츠 타입을 지정
+			// APPLICATION_OCTET_STREAM : 이진 파일의 콘텐츠 유형
+			headers.add("content-type"
+					, MediaType.APPLICATION_OCTET_STREAM.toString());
+			
+			
+				// 컨텐츠에 대한 추가설명 및 파일이름 한글처리
+				try {
+					headers.add("Content-Disposition"
+														//★따옴표수정
+								, "attachment; fileName=\"" 
+								+ new String(file.getName().getBytes("UTF-8"), "ISO-8859-1") + "\"");
+								//+ new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\""); ★수정
+					
+					//스프링에서 제공해주는 ResponseEntity 객체가 있어요
+					return new ResponseEntity<>(
+									//오류해결 선택에서 두번째거 선택 / 다운로드 파일 이진으로
+									FileCopyUtils.copyToByteArray(file)  
+									, headers
+									, HttpStatus.OK
+							);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					return new ResponseEntity<>(
+									HttpStatus.INTERNAL_SERVER_ERROR);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return new ResponseEntity<>(
+							HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+		// 파일이 존재하지 않으면	
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		// 처음에 만듦(문장다 작성후 필요없어져서 주석처리) return new ResponseEntity<>(HttpStatus.OK);
+		
+	}	
+	
+}
 
 
 

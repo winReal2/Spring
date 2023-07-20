@@ -21,7 +21,7 @@ public class BoardServiceTest {
 	BoardService boardService;
 	
 	public void getListXml() {
-		List<BoardVO> list = boardService.getListXml();
+		List<BoardVO> list = boardService.getListXml(null, null);
 		
 		list.forEach(board->{
 			log.info(board);

@@ -20,6 +20,7 @@ import lombok.extern.log4j.Log4j;
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
 public class fileuploadTest {
+	
 	@Autowired
 	FileuploadMapper mapper;
 
@@ -44,5 +45,13 @@ public class fileuploadTest {
 	public void testGetList() {
 		log.info("getList");
 		System.out.println(mapper.getList(50));
+	}
+	
+	@Test
+	public void delete() {
+		log.info("delete()");
+		int res = mapper.delete(4, "23d709c8-89bf-4cb1-8336-2beba56b5477");
+		assertEquals(1, res);
+		
 	}
 }

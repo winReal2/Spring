@@ -100,6 +100,11 @@ function requestAction(url){
 	  <label for="writer" class="form-label">작성자</label>
 	  <input type="text" class="form-control" id="writer" name="writer" readonly value="${board.writer }">
 	</div>
+	<div class="mb-3">
+		<label for="writer" class="form-label">첨부파일</label>
+		<input class="form-control" type="file" id="files" name="files" readonly value="${File.file }">
+	</div>
+	
 	<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 	<button type="button" id="btnEdit" 
 			class="btn btn-primary btn-lg">수정</button>

@@ -24,4 +24,13 @@ public class FIleuploadIServiceImpl implements FileuploadService {
 		return mapper.insert(vo);
 	}
 
+	@Override
+	public int delete(int bno, String uuid) {
+		//2가지가 이뤄져야함
+		//1. 파일삭제
+		
+		//2. 데이터베이스에서 삭제
+		return mapper.delete(bno, uuid); //컨트롤러가 처리가능
+	}
+
 }

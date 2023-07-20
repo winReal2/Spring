@@ -12,7 +12,7 @@ public class FileuploadVO {
 	private int bno;
 	
 	// 저장된 파일경로
-	private String savePath;
+	private String savePath;  //fileuploadMapper에서 지정되어있음.  db에서 조회할때 path까지 조회하도록 지정
 	private String s_savePath;
 
 	//uploadpath + uuid + "_" + fileName;

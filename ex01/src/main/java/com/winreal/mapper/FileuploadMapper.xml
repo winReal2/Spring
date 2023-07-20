@@ -8,7 +8,7 @@
 
 	<select id="getList" resultType="com.winreal.vo.FileuploadVO">
 			select t.* 
-      				, uploadPath||uuid||'_'||filename savePath
+      				, uploadPath||uuid||'_'||fileName savePath
         			, decode(filetype, 'I','s_'||uploadPath||uuid||'_'||fileName,'') s_savePath
 				from tbl_attach t
 				where bno=#{bno}
@@ -21,4 +21,12 @@
 			values(#{uuid}, #{uploadPath}, #{fileName}, #{filetype}, #{bno}) 
 			<!-- $과 #은 statement와 prestatement차이 -->
 	</insert>
+	
+	<delete id="delete">
+		delete tbl_attach 
+			where bno = #{bno} 
+			and uuid = #{uuid}
+	</delete>
+	
+	
 </mapper>

@@ -63,7 +63,7 @@
 					})
 					//요청결과 json문자열을 javascript 객체로 반환
 				.then(response => response.json())
-				//콜백함수 실행
+				//콜백함수 실행 (정상업로드 처리 아니면 메세지 알림)
 				.then(map => fileuploadRes(map)); 		
 					
 		});
@@ -83,13 +83,15 @@
 			alert("해당 종류의 파일은 업로드할 수 없습니다.");
 			return false;
 		}
-		
 		return true; //위의 과정을 다 거치고 나서는 true리턴
 	}
 	
 	function fileuploadRes(map){
 		if(map.result == 'success'){
 			divFileuploadRes.innerHTML = map.msg;
+			//게시글 등록
+		} else {
+			alert(map.msg);
 		}
 	}
 
@@ -101,20 +103,57 @@
 					.then(map => viewFileList(map));
 	}
 	
+	function attachFileDelete(e){
+		let bno = e.dataset.bno;
+		let uuid = e.dataset.uuid;
+		// 값이 유효하지 않은 경우 메세지 처리
+		// fetch 요청
+		//fetch('/file/delete/'+uuid+'/'+bno)
+		fetch(`/file/delete/\${uuid}/\${bno}`)  //el표현식으로 처리되지 않도록 \${ } /jsp에서 백팃이용하려면 $앞 역슬래시 삽입(\)
+			.then(response => response.json())
+			.then(map => fileDeleteRes(map)); 
+		 // ★console.log에서 fileDeleteRes로 수정
+	}
+	
+	//삭제 결과 처리
+	function fileDeleteRes(map){
+		if(map.result == 'success'){
+			console.log(map.msg);
+			//리스트 조회
+			getFileList();
+		} else{
+			alert(map.msg);
+		}
+	}
+	
 	function viewFileList(map){
 		console.log(map);
 		let content = '';
 		if(map.list.length > 0){
 		map.list.forEach(function(item, index){
-			content += item.fileName + '<br>';  // 복잡하니까 삭제 + '/' + item.savePath +'<br>';  //리스트 undefined 오류 > filename을  fileName로!!  
-		})
+			//console.log(item.savePath);
+			
+			//★ 파일 다운로드
+			let savePath = encodeURIComponent(item.savePath);
+			// +를 앞에 붙이면 NAN(숫자가 아닐때 나오는값) 오류발생
+			content += "<a href='/file/download?fileName=" 
+				 	+ savePath + "'>"
+					+ item.fileName + '</a>'
+					//onclick이벤트 
+					+ ' <i onclick="attachFileDelete(this)" '		
+					+ '	data-bno="'+ item.bno +'" data-uuid="'+ item.uuid +'" '
+					+ '	class="fa-solid fa-trash-can" style="color: #0142b2;"></i>'    
+					+ '<br>'; 
+					// 복잡하니까 삭제  > + '/' + item.savePath +'<br>';  //리스트 undefined 오류 > filename을  fileName로!!  
+				})
 		} else {
 			content = "등록된 파일이 없습니다.";
 		}
 		divFileupload.innerHTML = content;
 	}
-
+	
 </script>
+<script src="https://kit.fontawesome.com/410d7ec875.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -132,7 +171,7 @@
 
 	<button type="submit">파일업로드</button>
 	<!-- rest방식으로 파일업로드 -->
-	<button type="button" id="btnFileupload">Fetch 파일업로드</button>
+	<button type="button" id="btnFileupload">Fetch 파일업로드</button>  <!-- btnFileupload : 다른페이지에 파일등록한거 이동시 사용 -->
 	
 	
 	<div id="divFileuploadRes">
@@ -143,7 +182,24 @@
 	
 	<h2>파일 리스트 조회</h2>
 	<button type="button" id="btnList">리스트 조회</button>
-	<div id="divFileupload"></div>
+	<div id="divFileupload">
+	<!-- 리스트조회시 삭제버튼 보여준다. 그래서 리스트 뿌려주는 부분에 x버튼 삽입 (클릭시 삭제요청) -->	
+	
+	</div>
+	
 	
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
