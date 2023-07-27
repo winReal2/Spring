@@ -3,6 +3,7 @@ package com.winreal.controller;
 import java.net.URL;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,18 @@ public class MemberController extends CommonRestController{
 	// 생성자를 만들거나 세터게터 만들어서 받아올수있다
 	@Autowired
 	MemberService service;
+	
+	@GetMapping("/login/naver")  //api설정에서 설정해놓은 주소 그대로 작성
+	public void naverLogin() {
+		
+	}
+	
+	@GetMapping("/login/naver_callback")
+	public String naverLogin_callback(HttpServletRequest request, Model model) {
+		service.naverLogin(request, model);
+		return "/login/naver";
+	}
+	
 	
 	/**
 	 * 컨트롤러가 받아서 로그인 페이지로 이동 

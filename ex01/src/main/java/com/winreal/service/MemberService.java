@@ -1,5 +1,7 @@
 package com.winreal.service;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -14,5 +16,7 @@ public interface MemberService {
 	int insert(Member member);
 	
 	int idCheck(Member member);
+
+	void naverLogin(HttpServletRequest request, Model model);
 	
 }
